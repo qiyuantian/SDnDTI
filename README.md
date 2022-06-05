@@ -6,7 +6,7 @@
 
 ![Comparison of results](https://github.com/qiyuantian/SDnDTI/blob/main/v1fa.png)
 
-**Comprison of results**. SDnDTI results recover improved signal-to-noise ratio, image sharpness, and detailed anatomical information, are similar to those from supervised learning with external ground-truth data, and outperform raw data, BM4D-denoised and MPPCA-denoised results. Quantitative comparison can be found in the NeuroImage paper of SDnDTI.
+**Comprison of results**. SDnDTI results recover improved signal-to-noise ratio, image sharpness, and detailed anatomical information, are similar to those from supervised learning with external ground-truth data, and outperform results from raw data, BM4D-denoised and MPPCA-denoised data. Quantitative comparison can be found in the NeuroImage paper of SDnDTI.
 
 ![Comparison of tractography results](https://github.com/qiyuantian/DeepDTI/blob/main/tracks.png)
 
