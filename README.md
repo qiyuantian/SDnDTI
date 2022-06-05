@@ -12,23 +12,19 @@
 
 **Effects of training data**. The denoising performance of SDnDTI depends on the number of training subjects. Even when the CNN of SDnDTI is trained on the data of each single subject, SDnDTI could still produce high-quality results that outperform those from BM4D and AONLM.
 
-## s_DeepDTI_prepData.m
+## s_SDnDTI_designBvec.m
 
-Step-by-step MATLAB tutorial for preparing the input and ground-truth data for convolutional neural network in DeepDTI. HTML file can be automatically generaged using command: publish('s_DeepDTI_prepData.m', 'html').
+Step-by-step MATLAB tutorial for designing diffusion encoding directions for SDnDTI data acquisition. HTML file can be automatically generaged using command: publish('s_SDnDTI_designBvec.m', 'html'). Subsequent data preparation and CNN training and application follows DeepDTI (https://github.com/qiyuantian/DeepDTI)
 
 **Utility functions**
 
-- *amatrix.m*: create diffusion tensor transformation matrix for given b-vectors
-
-- *bgr_colormap.m*: create blue-gray-red color map for visualizaing residual images
-
-- *decompose_tensor.m*: decompose diffusion tensors and derive DTI metrics
+- *potentialenergy.m*: compute electrostatic potential energy of a set of directions
 
 - *rot3d.m*: create 3D rotation matrix to rotate b-vectors
 
 **Output**
 
-- *cnn_inout.mat*: input and ground-truth data prepared for CNN
+- *bvecs_whole*: uniformly distributed diffusion encoding directions
 
 
 
