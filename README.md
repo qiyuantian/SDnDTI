@@ -6,7 +6,7 @@
 
 ![Comparison of results](https://github.com/qiyuantian/SDnDTI/blob/main/v1fa.png)
 
-**Comprison of results**. SDnDTI results recover improved signal-to-noise ratio, image sharpness, and detailed anatomical information, are similar to those from supervised learning with external ground-truth data, and outperform results from raw data, BM4D-denoised and AONLM-denoised data. Quantitative comparison can be found in the NeuroImage paper of SDnDTI.
+**Comparison of results**. SDnDTI results recover improved signal-to-noise ratio, image sharpness, and detailed anatomical information, are similar to those from supervised learning with external ground-truth data, and outperform results from raw data, BM4D-denoised and AONLM-denoised data. Quantitative comparison can be found in the NeuroImage paper of SDnDTI.
 
 ![Effects of training data](https://github.com/qiyuantian/SDnDTI/blob/main/trainingsubj.png)
 
