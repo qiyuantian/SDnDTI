@@ -6,11 +6,11 @@
 
 ![Comparison of results](https://github.com/qiyuantian/SDnDTI/blob/main/v1fa.png)
 
-**Comprison of results**. SDnDTI results recover improved signal-to-noise ratio, image sharpness, and detailed anatomical information, are similar to those from supervised learning with external ground-truth data, and outperform results from raw data, BM4D-denoised and MPPCA-denoised data. Quantitative comparison can be found in the NeuroImage paper of SDnDTI.
+**Comprison of results**. SDnDTI results recover improved signal-to-noise ratio, image sharpness, and detailed anatomical information, are similar to those from supervised learning with external ground-truth data, and outperform results from raw data, BM4D-denoised and AONLM-denoised data. Quantitative comparison can be found in the NeuroImage paper of SDnDTI.
 
-![Comparison of tractography results](https://github.com/qiyuantian/DeepDTI/blob/main/tracks.png)
+![Effects of training data](https://github.com/qiyuantian/SDnDTI/blob/main/trainingsubj.png)
 
-**Comprison of tractography results**. DeepDTI denoised data recover more white matter fibers. Quantitative comparison of reconstructed fiber tracts and tract-specific analysis can be found in the NeuroImage paper of DeepDTI.
+**Effects of training data**. The denoising performance of SDnDTI depends on the number of training subjects. Even when the CNN of SDnDTI is trained on the data of each single subject, SDnDTI could still produce high-quality results that outperform those from BM4D and AONLM.
 
 ## s_DeepDTI_prepData.m
 
@@ -31,21 +31,6 @@ Step-by-step MATLAB tutorial for preparing the input and ground-truth data for c
 - *cnn_inout.mat*: input and ground-truth data prepared for CNN
 
 
-## s_DeepDTI_trainCNN.py
-
-Step-by-step Python tutorial for training the DnCNN in DeepDTI using data prepared using the s_DeepDTI_prepData.m script.
-
-**Utility functions**
-
-- *dncnn.py*: create DnCNN model
-
-- *qtlib.py*: create custom loss functions to only include loss within brain mask, and extract blocks from whole brain volume data
-
-**Output**
-
-- *deepdti_nb1_ep100.h5*: DnCNN model trained for 100 epoches
-
-- *deepdti_nb1_ep100.mat*: L2 losses for the training and validation
 
 ## **Refereces**
 
