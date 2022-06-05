@@ -2,7 +2,8 @@
 
 ![DeepDTI Pipeline](https://github.com/qiyuantian/SDnDTI/blob/main/pipeline.png)
 
-**Diffusion MRI physics-informed DeepDTI pipeline**. The input is a single b = 0 image and six diffusion-weighted image (DWI) volumes sampled along optimized diffusion-encoding directions that minimize the condition number of the diffusion tensor transformation matrix (a) (with or without anatomical, e.g., T1-weighted and T2-weighted, image volumes). The output is the high-quality b = 0 image volume and six DWI volumes sampled along optimized diffusion-encoding directions transformed from the diffusion tensor fitted using all available b = 0 images and DWIs (b). A deep 3-dimensional convolutional neural network (CNN) comprised of stacked convolutional filters paired with ReLU activation functions (n = 10, k = 190, d = 3, c = 9, p = 7) is adopted to map the input image volumes to the residuals between the input and output image volumes (c). More advanced CNNs can be used to further improve permance.
+**SDnDTI pipeline** for a DTI acquisition consisting of three b = 0 image volumes and 18 diffusion-weighted image volumes. SDnDTI employs the approach of first denoising, followed by averaging. 
+
 
 
 ![Comparison of results](https://github.com/qiyuantian/DeepDTI/blob/main/dwi_v1fa.png)
