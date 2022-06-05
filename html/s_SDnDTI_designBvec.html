@@ -1,0 +1,483 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>s_SDnDTI_designBvec</title><meta name="generator" content="MATLAB 9.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2022-06-04"><meta name="DC.source" content="s_SDnDTI_designBvec.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#1">introduction</a></li><li><a href="#2">define a set of optimized encoding directions</a></li><li><a href="#3">design uniform bvecs on z&gt;0 hemisphere</a></li><li><a href="#4">design uniform bvecs on a whole sphere</a></li><li><a href="#5">DeepDTI pipeline</a></li></ul></div><h2 id="1">introduction</h2><pre class="codeinput"><span class="comment">% s_SDnDTI_designBvec.m</span>
+<span class="comment">%</span>
+<span class="comment">%   A script for designing diffusion encoding directions for SDnDTI.</span>
+<span class="comment">%</span>
+<span class="comment">%   Source code:</span>
+<span class="comment">%       https://github.com/qiyuantian/SDnDTI/blob/main/s_SDnDTI_designBvec.m</span>
+<span class="comment">%</span>
+<span class="comment">%   HTML file can be automatically generaged using command:</span>
+<span class="comment">%       publish('s_SDnDTI_designBvec.m', 'html');</span>
+<span class="comment">%</span>
+<span class="comment">%   Reference:</span>
+<span class="comment">%       [1] Tian Q, Li Z, Fan Q, Polimeni JR, Bilgic B, Salat DH, Huang SY.</span>
+<span class="comment">%       SDnDTI: Self-supervised deep learning-based denoising for diffusion</span>
+<span class="comment">%       tensor MRI. NeuroImage, 2022; 253: 119033.</span>
+<span class="comment">%</span>
+<span class="comment">% (c) Qiyuan Tian, Harvard, 2022</span>
+</pre><h2 id="2">define a set of optimized encoding directions</h2><pre class="codeinput">clear, clc, close <span class="string">all</span>
+
+<span class="comment">% 6 optimized directions from the DSM scheme that minimizes the condition</span>
+<span class="comment">% number of the diffusion tensor transformation matrix</span>
+<span class="comment">% from S Skare et al., J Magn Reson. 2000;147(2):340-52</span>
+<span class="comment">% 10, 20, 30 (dsm10.m, dsm20.m, dsm30.m) or more directions can be used for</span>
+<span class="comment">% very noisy data</span>
+dsm6 = [0.91, 0.416, 0; <span class="keyword">...</span>
+       0, 0.91, 0.416; <span class="keyword">...</span>
+       0.416, 0, 0.91; <span class="keyword">...</span>
+       0.91, -0.416, 0; <span class="keyword">...</span>
+       0, 0.91, -0.416; <span class="keyword">...</span>
+      -0.416, 0, 0.91];
+
+dsm6_norm = dsm6 ./ sqrt(dsm6(:, 1) .^ 2 + dsm6(:, 2) .^ 2 + dsm6(:, 3) .^ 2); <span class="comment">% normalize vectors</span>
+
+figure <span class="comment">% display dsm6</span>
+plot3(dsm6_norm(:, 1), dsm6_norm(:, 2), dsm6_norm(:, 3), <span class="string">'.'</span>);
+
+grid <span class="string">on</span>, axis <span class="string">equal</span>
+xlim([-1, 1])
+ylim([-1, 1])
+zlim([-1, 1])
+title(<span class="string">'6 optimal directions'</span>);
+</pre><img vspace="5" hspace="5" src="s_SDnDTI_designBvec_01.png" alt=""> <h2 id="3">design uniform bvecs on z&gt;0 hemisphere</h2><pre class="codeinput"><span class="comment">% (1) select N sets, with each set as a random rotation of dsm6</span>
+
+<span class="comment">% (2) directions from all sets are uniformly distributed on z&gt;0 hemisphere</span>
+<span class="comment">% (since v and -v are identical for diffusion encoding) to maximize angular</span>
+<span class="comment">% coverage</span>
+
+N = 5; <span class="comment">% select 5 sets as an example, so in total of 5x6=30 dirs</span>
+bvecs_hemi = []; <span class="comment">% designed diffusion encoding directions</span>
+unif_min = 10^10; <span class="comment">% init using a large number</span>
+
+<span class="keyword">for</span> ii = 1 : 100000 <span class="comment">% number of iterations can be increased for better results</span>
+
+    dirs_all = []; <span class="comment">% all 30 directions</span>
+
+    <span class="keyword">for</span> jj = 1 : N
+        rotangs = rand(1, 3) * 2 * pi; <span class="comment">% random angles to rotate around x, y, z axis</span>
+        R = rot3d(rotangs); <span class="comment">% rotation matrix</span>
+        dsm6_rot = (R * dsm6_norm')'; <span class="comment">% roated directions</span>
+
+        dirs_all = [dirs_all; dsm6_rot];
+    <span class="keyword">end</span>
+
+    <span class="comment">% [v; -v] is used for optimization such that v is uniformly distributed</span>
+    <span class="comment">% on z&gt;0 hemisphere</span>
+    dirs_tmp = [dirs_all; -dirs_all];
+
+    <span class="comment">% uniformly distributed directions have lowest electrostatic potential energy</span>
+    <span class="comment">% details see Jones Magn. Reson. Med., 51 (2004), pp. 807-815</span>
+    unif = potentialenergy(dirs_tmp); <span class="comment">% uniformity of all 30 directions</span>
+
+    <span class="keyword">if</span> unif &lt; unif_min <span class="comment">% keep new directions if uniformity is better</span>
+        unif_min = unif;
+        bvecs_hemi = dirs_all;
+        disp(unif_min)
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+n = size(bvecs_hemi, 1) / N;
+
+figure; <span class="comment">% display designed directions</span>
+<span class="keyword">for</span> ii = 1 : N
+    idxs = (ii - 1) * n + 1;
+    idxe = ii  * n;
+    bvecs_vis = bvecs_hemi(idxs:idxe, :);
+    bvecs_vis = [bvecs_vis; -bvecs_vis];
+
+    plot3(bvecs_vis(:, 1), bvecs_vis(:, 2), bvecs_vis(:, 3), <span class="string">'.'</span>); <span class="comment">% each color represents a set</span>
+    hold <span class="string">on</span>
+<span class="keyword">end</span>
+
+grid <span class="string">on</span>, axis <span class="string">equal</span>
+xlim([-1, 1])
+ylim([-1, 1])
+zlim([-1, 1])
+title(<span class="string">'bvecs and -bvecs together are uniform on whole sphere '</span>);
+
+figure
+<span class="keyword">for</span> ii = 1 : N
+    idxs = (ii - 1) * n + 1;
+    idxe = ii  * n;
+    bvecs_vis = bvecs_hemi(idxs:idxe, :);
+
+    tmp = sign(bvecs_vis(:, 3));
+    tmp(tmp == 0) = 1;
+    bvecs_vis = bvecs_vis .* tmp; <span class="comment">% flip dirs with z&lt;0 to z&gt;0</span>
+
+    plot3(bvecs_vis(:, 1), bvecs_vis(:, 2), bvecs_vis(:, 3), <span class="string">'.'</span>); <span class="comment">% each color represents a set</span>
+    hold <span class="string">on</span>
+<span class="keyword">end</span>
+
+grid <span class="string">on</span>, axis <span class="string">equal</span>
+xlim([-1, 1])
+ylim([-1, 1])
+zlim([-1, 1])
+title(<span class="string">'bvecs only uniform on z&gt;0 hemisphere'</span>);
+</pre><pre class="codeoutput">   3.0007e+03
+
+   2.9875e+03
+
+   2.9866e+03
+
+   2.9518e+03
+
+   2.9339e+03
+
+   2.9078e+03
+
+   2.8946e+03
+
+   2.8929e+03
+
+   2.8852e+03
+
+   2.8820e+03
+
+   2.8778e+03
+
+   2.8759e+03
+
+   2.8757e+03
+
+   2.8683e+03
+
+   2.8566e+03
+
+</pre><img vspace="5" hspace="5" src="s_SDnDTI_designBvec_02.png" alt=""> <img vspace="5" hspace="5" src="s_SDnDTI_designBvec_03.png" alt=""> <h2 id="4">design uniform bvecs on a whole sphere</h2><pre class="codeinput"><span class="comment">% this helps eddy current correction using FSL's eddy function, since</span>
+<span class="comment">% eddy-induced iamge distortions from opposite diffusion encoding</span>
+<span class="comment">% directions are opposite</span>
+
+bvecs_whole = []; <span class="comment">% finally optimized bvecs for SDnDTI data acquisition</span>
+unif_min = 10^10; <span class="comment">% init using a large number</span>
+
+<span class="keyword">for</span> ii = 1 : 100000 <span class="comment">% number of iterations can be increased for better results</span>
+
+    r = sign(rand(size(bvecs_hemi, 1), 1) - 0.5); <span class="comment">% random vector to flip each dir</span>
+    dirs_tmp = bvecs_hemi .* r; <span class="comment">% flip dirs</span>
+    unif = potentialenergy(dirs_tmp); <span class="comment">% uniformity</span>
+
+    <span class="keyword">if</span> unif &lt; unif_min <span class="comment">% keep new directions if uniformity is better</span>
+        unif_min = unif;
+        bvecs_whole = dirs_tmp;
+        disp(unif_min)
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+figure; <span class="comment">% display designed directions</span>
+<span class="keyword">for</span> ii = 1 : N
+    idxs = (ii - 1) * n + 1;
+    idxe = ii  * n;
+    bvecs_vis = bvecs_hemi(idxs:idxe, :);
+
+    plot3(bvecs_vis(:, 1), bvecs_vis(:, 2), bvecs_vis(:, 3), <span class="string">'.'</span>); <span class="comment">% each color represents a set</span>
+    hold <span class="string">on</span>
+<span class="keyword">end</span>
+
+grid <span class="string">on</span>, axis <span class="string">equal</span>
+xlim([-1, 1])
+ylim([-1, 1])
+zlim([-1, 1])
+title(<span class="string">'bvecs only uniform on hemisphere'</span>);
+
+figure
+<span class="keyword">for</span> ii = 1 : N
+    idxs = (ii - 1) * n + 1;
+    idxe = ii  * n;
+    bvecs_vis = bvecs_whole(idxs:idxe, :);
+
+    plot3(bvecs_vis(:, 1), bvecs_vis(:, 2), bvecs_vis(:, 3), <span class="string">'.'</span>); <span class="comment">% each color represents a set</span>
+    hold <span class="string">on</span>
+<span class="keyword">end</span>
+
+grid <span class="string">on</span>, axis <span class="string">equal</span>
+xlim([-1, 1])
+ylim([-1, 1])
+zlim([-1, 1])
+title(<span class="string">'bvecs uniform on both hemi &amp; whole sphere'</span>);
+</pre><pre class="codeoutput">  685.7500
+
+  684.0345
+
+  678.5069
+
+  674.1099
+
+  673.1246
+
+  669.8592
+
+  668.3636
+
+  666.6570
+
+</pre><img vspace="5" hspace="5" src="s_SDnDTI_designBvec_04.png" alt=""> <img vspace="5" hspace="5" src="s_SDnDTI_designBvec_05.png" alt=""> <h2 id="5">DeepDTI pipeline</h2><pre class="codeinput"><span class="comment">% subsequent data preparation and CNN training and application follows DeepDTI</span>
+<span class="comment">% see codes here: https://github.com/qiyuantian/DeepDTI</span>
+
+<span class="comment">% diffusion weighted images (DWIs) from each set, which are optimal for</span>
+<span class="comment">% diffusion tensor fitting, serve as input for CNNs</span>
+
+<span class="comment">% DWIs from all sets serve as target of CNNs</span>
+</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2018b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% introduction
+
+% s_SDnDTI_designBvec.m
+% 
+%   A script for designing diffusion encoding directions for SDnDTI.
+%
+%   Source code:
+%       https://github.com/qiyuantian/SDnDTI/blob/main/s_SDnDTI_designBvec.m
+%
+%   HTML file can be automatically generaged using command:
+%       publish('s_SDnDTI_designBvec.m', 'html');
+%
+%   Reference:
+%       [1] Tian Q, Li Z, Fan Q, Polimeni JR, Bilgic B, Salat DH, Huang SY.
+%       SDnDTI: Self-supervised deep learning-based denoising for diffusion
+%       tensor MRI. NeuroImage, 2022; 253: 119033.
+%
+% (c) Qiyuan Tian, Harvard, 2022
+
+%% define a set of optimized encoding directions
+
+clear, clc, close all
+
+% 6 optimized directions from the DSM scheme that minimizes the condition
+% number of the diffusion tensor transformation matrix
+% from S Skare et al., J Magn Reson. 2000;147(2):340-52
+% 10, 20, 30 (dsm10.m, dsm20.m, dsm30.m) or more directions can be used for 
+% very noisy data
+dsm6 = [0.91, 0.416, 0; ...
+       0, 0.91, 0.416; ...
+       0.416, 0, 0.91; ...
+       0.91, -0.416, 0; ...
+       0, 0.91, -0.416; ...
+      -0.416, 0, 0.91];
+
+dsm6_norm = dsm6 ./ sqrt(dsm6(:, 1) .^ 2 + dsm6(:, 2) .^ 2 + dsm6(:, 3) .^ 2); % normalize vectors
+
+figure % display dsm6 
+plot3(dsm6_norm(:, 1), dsm6_norm(:, 2), dsm6_norm(:, 3), '.');
+
+grid on, axis equal
+xlim([-1, 1])
+ylim([-1, 1])
+zlim([-1, 1])
+title('6 optimal directions');
+
+%% design uniform bvecs on z>0 hemisphere
+
+% (1) select N sets, with each set as a random rotation of dsm6
+
+% (2) directions from all sets are uniformly distributed on z>0 hemisphere
+% (since v and -v are identical for diffusion encoding) to maximize angular
+% coverage
+
+N = 5; % select 5 sets as an example, so in total of 5x6=30 dirs
+bvecs_hemi = []; % designed diffusion encoding directions
+unif_min = 10^10; % init using a large number
+
+for ii = 1 : 100000 % number of iterations can be increased for better results
+    
+    dirs_all = []; % all 30 directions
+    
+    for jj = 1 : N
+        rotangs = rand(1, 3) * 2 * pi; % random angles to rotate around x, y, z axis
+        R = rot3d(rotangs); % rotation matrix
+        dsm6_rot = (R * dsm6_norm')'; % roated directions
+        
+        dirs_all = [dirs_all; dsm6_rot];
+    end
+        
+    % [v; -v] is used for optimization such that v is uniformly distributed
+    % on z>0 hemisphere
+    dirs_tmp = [dirs_all; -dirs_all];
+    
+    % uniformly distributed directions have lowest electrostatic potential energy
+    % details see Jones Magn. Reson. Med., 51 (2004), pp. 807-815
+    unif = potentialenergy(dirs_tmp); % uniformity of all 30 directions
+    
+    if unif < unif_min % keep new directions if uniformity is better
+        unif_min = unif;
+        bvecs_hemi = dirs_all;
+        disp(unif_min)
+    end
+end
+
+n = size(bvecs_hemi, 1) / N;
+
+figure; % display designed directions
+for ii = 1 : N
+    idxs = (ii - 1) * n + 1;
+    idxe = ii  * n;
+    bvecs_vis = bvecs_hemi(idxs:idxe, :);
+    bvecs_vis = [bvecs_vis; -bvecs_vis];
+        
+    plot3(bvecs_vis(:, 1), bvecs_vis(:, 2), bvecs_vis(:, 3), '.'); % each color represents a set
+    hold on
+end
+    
+grid on, axis equal
+xlim([-1, 1])
+ylim([-1, 1])
+zlim([-1, 1])
+title('bvecs and -bvecs together are uniform on whole sphere ');
+
+figure
+for ii = 1 : N
+    idxs = (ii - 1) * n + 1;
+    idxe = ii  * n;
+    bvecs_vis = bvecs_hemi(idxs:idxe, :);
+    
+    tmp = sign(bvecs_vis(:, 3));
+    tmp(tmp == 0) = 1;
+    bvecs_vis = bvecs_vis .* tmp; % flip dirs with z<0 to z>0
+    
+    plot3(bvecs_vis(:, 1), bvecs_vis(:, 2), bvecs_vis(:, 3), '.'); % each color represents a set
+    hold on
+end
+    
+grid on, axis equal
+xlim([-1, 1])
+ylim([-1, 1])
+zlim([-1, 1])
+title('bvecs only uniform on z>0 hemisphere');
+
+%% design uniform bvecs on a whole sphere
+
+% this helps eddy current correction using FSL's eddy function, since
+% eddy-induced iamge distortions from opposite diffusion encoding
+% directions are opposite
+
+bvecs_whole = []; % finally optimized bvecs for SDnDTI data acquisition
+unif_min = 10^10; % init using a large number
+
+for ii = 1 : 100000 % number of iterations can be increased for better results
+
+    r = sign(rand(size(bvecs_hemi, 1), 1) - 0.5); % random vector to flip each dir
+    dirs_tmp = bvecs_hemi .* r; % flip dirs
+    unif = potentialenergy(dirs_tmp); % uniformity
+    
+    if unif < unif_min % keep new directions if uniformity is better
+        unif_min = unif;
+        bvecs_whole = dirs_tmp;
+        disp(unif_min)
+    end
+end
+
+figure; % display designed directions
+for ii = 1 : N
+    idxs = (ii - 1) * n + 1;
+    idxe = ii  * n;
+    bvecs_vis = bvecs_hemi(idxs:idxe, :);
+        
+    plot3(bvecs_vis(:, 1), bvecs_vis(:, 2), bvecs_vis(:, 3), '.'); % each color represents a set
+    hold on
+end
+    
+grid on, axis equal
+xlim([-1, 1])
+ylim([-1, 1])
+zlim([-1, 1])
+title('bvecs only uniform on hemisphere');
+
+figure
+for ii = 1 : N
+    idxs = (ii - 1) * n + 1;
+    idxe = ii  * n;
+    bvecs_vis = bvecs_whole(idxs:idxe, :);
+        
+    plot3(bvecs_vis(:, 1), bvecs_vis(:, 2), bvecs_vis(:, 3), '.'); % each color represents a set
+    hold on
+end
+    
+grid on, axis equal
+xlim([-1, 1])
+ylim([-1, 1])
+zlim([-1, 1])
+title('bvecs uniform on both hemi & whole sphere');
+
+%% DeepDTI pipeline 
+
+% subsequent data preparation and CNN training and application follows DeepDTI 
+% see codes here: https://github.com/qiyuantian/DeepDTI
+
+% diffusion weighted images (DWIs) from each set, which are optimal for
+% diffusion tensor fitting, serve as input for CNNs
+
+% DWIs from all sets serve as target of CNNs
+
+
+
+
+
+##### SOURCE END #####
+--></body></html>
