@@ -26,6 +26,19 @@ Step-by-step MATLAB tutorial for designing diffusion encoding directions for SDn
 
 - *bvecs_whole*: uniformly distributed diffusion encoding directions
 
+## s_SDnDTI_designBvec4AcquiredData.m
+
+Step-by-step MATLAB tutorial for selecting a subset of diffusion-weighted images (DWIs) out of all DWIs for SDnDTI. HTML file can be automatically generaged using command: publish('s_SDnDTI_designBvec4AcquiredData.m', 'html'). Subsequent data preparation and CNN training and application follows DeepDTI (https://github.com/qiyuantian/DeepDTI)
+
+**Utility functions**
+
+- *potentialenergy.m*: compute electrostatic potential energy of a set of directions
+
+- *rot3d.m*: create 3D rotation matrix to rotate b-vectors
+
+**Output**
+
+- *bvecs_hemi*: uniformly distributed diffusion encoding directions
 
 
 ## **Refereces**
