@@ -1,6 +1,6 @@
 # SDnDTI Tutorial
 
-This tutorial goes over how to design optimal diffusion encoding directions for SDnDTI for new neuroscientifical applications (s_SDnDTI_designBvec.m), or retrospectively extract a subset of diffusion weighted images (DWIs) with optimal directions for SDnDTI from a larger diffusion dataset with much more DWIs such as those provided by the Human Connectome Project for technical development and experiments (s_SDnDTI_designBvec4AcquiredData.m). Please contact Dr. Qiyuan Tian if you simply want a table of directions for SDnDTI. 
+This tutorial goes over how to design optimal diffusion encoding directions for SDnDTI for new neuroscientific applications (s_SDnDTI_designBvec.m), or retrospectively extract a subset of diffusion weighted images (DWIs) with optimal directions for SDnDTI from a larger diffusion dataset with much more DWIs such as those provided by the Human Connectome Project for technical development and experiments (s_SDnDTI_designBvec4AcquiredData.m). Please contact Dr. Qiyuan Tian if you simply want a table of directions for SDnDTI. 
 
 ![DeepDTI Pipeline](https://github.com/qiyuantian/SDnDTI/blob/main/pipeline.png)
 
