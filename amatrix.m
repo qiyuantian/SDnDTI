@@ -1,0 +1,3 @@
+function A = amatrix(bvec)
+A = [bvec(:,1).*bvec(:,1),  2 * bvec(:,1).*bvec(:,2),  2 * bvec(:,1).*bvec(:,3), ...
+                  bvec(:,2).*bvec(:,2),  2 * bvec(:,2).*bvec(:,3),  bvec(:,3).*bvec(:,3)];
